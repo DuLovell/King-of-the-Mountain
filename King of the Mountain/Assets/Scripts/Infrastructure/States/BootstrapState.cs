@@ -3,6 +3,7 @@ using Infrastructure.Factory;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
+using Services.Environment;
 using Services.Input;
 
 namespace Infrastructure.States
@@ -40,6 +41,7 @@ namespace Infrastructure.States
 			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssetProvider>()));
 			_services.RegisterSingle<ISaveLoadService>(
 				new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
+			_services.RegisterSingle<IStairsService>(new StairsService(_services.Single<IGameFactory>()));
 		}
 
 		private void EnterLoadLevel() =>
