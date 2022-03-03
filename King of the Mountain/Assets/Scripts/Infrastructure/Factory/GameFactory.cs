@@ -38,6 +38,16 @@ namespace Infrastructure.Factory
 			ProgressReaders.Add(progressReader);
 		}
 
+		public GameObject CreatePlayer(Vector3 position)
+		{
+			return _assets.Instantiate(AssetPath.PlayerPath, position);
+		}
+
+		public GameObject CreateStair(Vector3 position, Vector3 lookDirection)
+		{
+			return _assets.Instantiate(AssetPath.StairPath, position, Quaternion.LookRotation(lookDirection));
+		}
+
 		public void Cleanup()
 		{
 			ProgressReaders.Clear();
