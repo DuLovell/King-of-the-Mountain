@@ -13,6 +13,8 @@ namespace Infrastructure.Factory
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
 
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
+		
+		public GameObject Player { get; private set; }
 
 		public GameFactory(IAssetProvider assets)
 		{
@@ -40,7 +42,9 @@ namespace Infrastructure.Factory
 
 		public GameObject CreatePlayer(Vector3 position)
 		{
-			return _assets.Instantiate(AssetPath.PlayerPath, position);
+			GameObject playerInstance = _assets.Instantiate(AssetPath.PlayerPath, position);
+			Player = playerInstance;
+			return playerInstance;
 		}
 
 		public GameObject CreateStair(Vector3 position, Vector3 lookDirection)

@@ -11,6 +11,7 @@ namespace Infrastructure.Factory
 		void CreateHud();
 		List<ISavedProgressReader> ProgressReaders { get; }
 		List<ISavedProgress> ProgressWriters { get; }
+		GameObject Player { get; }
 		void Cleanup();
 		void RegisterProgressWatchers(GameObject gameObject);
 		void Register(ISavedProgressReader progressReader);
