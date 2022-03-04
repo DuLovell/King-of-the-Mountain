@@ -1,4 +1,5 @@
-﻿using Infrastructure.Factory;
+﻿using Data;
+using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
 using Services.Environment;
@@ -16,8 +17,7 @@ namespace Infrastructure.States
 		private readonly IPersistentProgressService _progressService;
 		private readonly IStairsPlacementService _stairsPlacementService;
 		
-		//TODO Перенести в общий конфиг
-		private readonly Vector3 _playerStartPosition = Vector3.zero;
+		private readonly Vector3 _playerStartPosition = Config.PlayerStartPosition;
 
 		public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
 			IGameFactory gameFactory, IPersistentProgressService progressService, IStairsPlacementService stairsPlacementService)

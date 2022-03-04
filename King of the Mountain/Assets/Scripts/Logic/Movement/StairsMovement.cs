@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Data;
 using DG.Tweening;
 using Infrastructure.Services;
 using Services.Input;
@@ -13,7 +14,7 @@ namespace Logic.Movement
 		[SerializeField] private int _jumps = 1;
 		[SerializeField] private float _jumpDuration = 1f;
 
-		private readonly Vector3 _stairOffset = new Vector3(0f, 1f, 1f);
+		private readonly Vector3 _stairOffset = Config.StairOffset;
 		
 		private IInputService _inputService;
 

@@ -1,15 +1,15 @@
-﻿using UnityEngine;
+﻿using Data;
+using UnityEngine;
 
 namespace Services.Environment.Stairs
 {
 	public class StairsCountService : IStairsCountService
 	{
-		private readonly Vector3 _stairOffset = new Vector3(0f, 1f, 1f);
+		private readonly Vector3 _stairOffset = Config.StairOffset;
 
 		private int _lastPlayerPositionStairNumber;
 		
-		//TODO Использовать playerStartPosition
-		private Vector3 _lastPlayerPosition = Vector3.zero;
+		private Vector3 _lastPlayerPosition = Config.PlayerStartPosition;
 		
 		public int CalculateStairsDelta(Vector3 newPosition)
 		{

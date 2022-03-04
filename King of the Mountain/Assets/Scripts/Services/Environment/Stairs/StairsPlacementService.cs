@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Data;
 using Infrastructure.Factory;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -16,7 +17,7 @@ namespace Services.Environment.Stairs
 		private readonly IStairsCountService _stairsCountService;
 		
 		private readonly Queue<GameObject> _activeStairs = new Queue<GameObject>();
-		private readonly Vector3 _stairOffset = new Vector3(0f, 1f, 1f);
+		private readonly Vector3 _stairOffset = Config.StairOffset;
 
 		private Transform _stairsContainer;
 
