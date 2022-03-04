@@ -58,6 +58,10 @@ public class SwipeDetector : MonoBehaviour
             }
             _fingerUpPosition = _fingerDownPosition;
         }
+        else
+        {
+            _inputService.InvokeOnTap();
+        }
     }
 
     private bool IsVerticalSwipe()
