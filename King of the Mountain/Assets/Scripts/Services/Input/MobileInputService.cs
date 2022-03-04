@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 namespace Services.Input
 {
 	public class MobileInputService : IInputService
 	{
-		public Vector2 Axis { get; }
+		public event Action<SwipeData> OnSwipe;
+
+		public void InvokeOnSwipe(SwipeData swipeData)
+		{
+			OnSwipe?.Invoke(swipeData);
+		}
 	}
 }

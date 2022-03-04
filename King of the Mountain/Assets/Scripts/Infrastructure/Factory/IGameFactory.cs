@@ -17,5 +17,6 @@ namespace Infrastructure.Factory
 		void Register(ISavedProgressReader progressReader);
 		GameObject CreatePlayer(Vector3 position);
 		GameObject CreateStair(Vector3 position, Vector3 lookDirection);
+		GameObject CreateSwipeDetector();
 	}
 }

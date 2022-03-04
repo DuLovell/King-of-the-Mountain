@@ -52,6 +52,11 @@ namespace Infrastructure.Factory
 			return _assets.Instantiate(AssetPath.StairPath, position, Quaternion.LookRotation(lookDirection));
 		}
 
+		public GameObject CreateSwipeDetector()
+		{
+			return _assets.Instantiate<SwipeDetector>(AssetPath.SwipeDetectorPath).gameObject;
+		}
+
 		public void Cleanup()
 		{
 			ProgressReaders.Clear();

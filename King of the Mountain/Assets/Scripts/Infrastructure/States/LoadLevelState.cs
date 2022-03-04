@@ -58,6 +58,7 @@ namespace Infrastructure.States
 		{
 			GameObject player = _gameFactory.CreatePlayer(_playerStartPosition);
 			_stairsPlacementService.PlaceStairs(player.transform);
+			GameObject swipeDetector = _gameFactory.CreateSwipeDetector();
 		}
 	}
 }
