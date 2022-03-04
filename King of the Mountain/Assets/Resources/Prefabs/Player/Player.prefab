@@ -104,6 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5786005384023572671}
+  - component: {fileID: 5208311256249553968}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -126,3 +127,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5208311256249553968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802420278791498857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbf08ad90dcb45c58ba41e9a40326bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpPower: 0.5
+  _jumps: 1
+  _jumpDuration: 0.2
