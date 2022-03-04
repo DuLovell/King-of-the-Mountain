@@ -6,6 +6,7 @@ using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Logic;
 using Services.Environment;
+using Services.Environment.Stairs;
 
 namespace Infrastructure.States
 {
@@ -23,13 +24,15 @@ namespace Infrastructure.States
 				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain,
 					services.Single<IGameFactory>(), 
 					services.Single<IPersistentProgressService>(), 
-					services.Single<IStairsService>()),
+					services.Single<IStairsPlacementService>()),
 				
 				[typeof(LoadProgressState)] = new LoadProgressState(this, 
 					services.Single<IPersistentProgressService>(),
 					services.Single<ISaveLoadService>()),
 				
-				[typeof(GameLoopState)] = new GameLoopState(this),
+				[typeof(GameLoopState)] = new GameLoopState(this,  
+					services.Single<IStairsPlacementService>(),
+					services.Single<IGameFactory>()),
 			};
 		}
 

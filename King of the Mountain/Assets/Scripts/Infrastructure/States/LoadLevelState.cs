@@ -2,6 +2,7 @@
 using Infrastructure.Services.PersistentProgress;
 using Logic;
 using Services.Environment;
+using Services.Environment.Stairs;
 using UnityEngine;
 
 namespace Infrastructure.States
@@ -13,19 +14,20 @@ namespace Infrastructure.States
 		private readonly LoadingCurtain _loadingCurtain;
 		private readonly IGameFactory _gameFactory;
 		private readonly IPersistentProgressService _progressService;
-		private readonly IStairsService _stairsService;
+		private readonly IStairsPlacementService _stairsPlacementService;
 		
+		//TODO Перенести в общий конфиг
 		private readonly Vector3 _playerStartPosition = Vector3.zero;
 
 		public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
-			IGameFactory gameFactory, IPersistentProgressService progressService, IStairsService stairsService)
+			IGameFactory gameFactory, IPersistentProgressService progressService, IStairsPlacementService stairsPlacementService)
 		{
 			_stateMachine = gameStateMachine;
 			_sceneLoader = sceneLoader;
 			_loadingCurtain = loadingCurtain;
 			_gameFactory = gameFactory;
 			_progressService = progressService;
-			_stairsService = stairsService;
+			_stairsPlacementService = stairsPlacementService;
 		}
 
 		public void Enter(string sceneName)
@@ -55,7 +57,7 @@ namespace Infrastructure.States
 		private void InitGameWorld()
 		{
 			GameObject player = _gameFactory.CreatePlayer(_playerStartPosition);
-			_stairsService.PlaceStairs(player.transform);
+			_stairsPlacementService.PlaceStairs(player.transform);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Services.Environment;
+using Services.Environment.Stairs;
 using Services.Input;
 
 namespace Infrastructure.States
@@ -36,12 +37,22 @@ namespace Infrastructure.States
 		private void RegisterServices()
 		{
 			_services.RegisterSingle<IInputService>(GetInputService());
+			
 			_services.RegisterSingle<IAssetProvider>(new AssetProvider());
+			
 			_services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
+			
 			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssetProvider>()));
+			
 			_services.RegisterSingle<ISaveLoadService>(
-				new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
-			_services.RegisterSingle<IStairsService>(new StairsService(_services.Single<IGameFactory>()));
+				new SaveLoadService(_services.Single<IPersistentProgressService>(), 
+					_services.Single<IGameFactory>()));
+			
+			_services.RegisterSingle<IStairsCountService>(new StairsCountService());
+			
+			_services.RegisterSingle<IStairsPlacementService>(new StairsPlacementService(
+				_services.Single<IGameFactory>(), 
+				_services.Single<IStairsCountService>()));
 		}
 
 		private void EnterLoadLevel() =>
