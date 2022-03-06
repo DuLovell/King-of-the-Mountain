@@ -11,19 +11,23 @@ namespace Services.Environment.Enemies
 {
 	public class EnemySpawnService : IEnemySpawnService
 	{
+		private const int SPAWN_STAIRS_OFFSET = 20;
+		
 		private readonly IStairsCountService _stairCountService;
 		private readonly IGameFactory _gameFactory;
 		private readonly ICoroutineRunner _coroutineRunner;
 
-		private readonly Queue<GameObject> _activeEnemies;
+		private readonly Queue<Enemy> _activeEnemies;
 		private Coroutine _enemySpawnCoroutine;
+
+		private float NextSpawnDelay => Random.Range(1f, 3f);
 
 		public EnemySpawnService(IStairsCountService stairCountService, IGameFactory gameFactory,
 			ICoroutineRunner coroutineRunner)
 		{
 			_stairCountService = stairCountService;
 			_gameFactory = gameFactory;
-			_activeEnemies = new Queue<GameObject>();
+			_activeEnemies = new Queue<Enemy>();
 			_coroutineRunner = coroutineRunner;
 		}
 		
@@ -35,10 +39,10 @@ namespace Services.Environment.Enemies
 			{
 				while (true)
 				{
-					Vector3 spawnPosition = (_stairCountService.LastPlayerPositionStairNumber + 20) * Config.StairOffset;
+					Vector3 spawnPosition = (_stairCountService.LastPlayerPositionStairNumber + SPAWN_STAIRS_OFFSET) * Config.StairOffset;
 					SpawnEnemy(spawnPosition);
 					
-					yield return new WaitForSeconds(2f);
+					yield return new WaitForSeconds(NextSpawnDelay);
 				}
 			}
 		}
@@ -53,15 +57,15 @@ namespace Services.Environment.Enemies
 
 		private void SpawnEnemy(Vector3 spawnPosition)
 		{
-			GameObject enemy = _gameFactory.CreateEnemy(spawnPosition);
-			enemy.GetComponent<RendererVisibilityReporter>().OnBecomeInvisible += HideEnemy;
+			Enemy enemy = _gameFactory.CreateEnemy(spawnPosition);
+			enemy.VisibilityReporter.OnBecomeInvisible += HideEnemy;
 			_activeEnemies.Enqueue(enemy);
 		}
 
 		private void HideEnemy()
 		{
-			GameObject enemyToHide = _activeEnemies.Dequeue();
-			enemyToHide.GetComponent<RendererVisibilityReporter>().OnBecomeInvisible -= HideEnemy;
+			Enemy enemyToHide = _activeEnemies.Dequeue();
+			enemyToHide.VisibilityReporter.OnBecomeInvisible -= HideEnemy;
 			Object.Destroy(enemyToHide);
 		}
 	}

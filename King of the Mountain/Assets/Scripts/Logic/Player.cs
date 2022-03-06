@@ -11,7 +11,7 @@ namespace Logic
 		public event Action OnPlayerDied;
 
 		private Rigidbody _rigidbody;
-		private RendererVisibilityReporter _rendererVisibilityReporter;
+		private RendererVisibilityReporter _visibilityReporter;
 
 		public PlayerMover Mover { get; private set; }
 
@@ -19,19 +19,19 @@ namespace Logic
 		{
 			Mover = GetComponent<PlayerMover>();
 			_rigidbody = GetComponent<Rigidbody>();
-			_rendererVisibilityReporter = GetComponent<RendererVisibilityReporter>();
+			_visibilityReporter = GetComponent<RendererVisibilityReporter>();
 		}
 
 		private void OnEnable()
 		{
 			Mover.OnPlayerMoved += CheckGround;
-			_rendererVisibilityReporter.OnBecomeInvisible += Destroy;
+			_visibilityReporter.OnBecomeInvisible += Destroy;
 		}
 
 		private void OnDisable()
 		{
 			Mover.OnPlayerMoved -= CheckGround;
-			_rendererVisibilityReporter.OnBecomeInvisible -= Destroy;
+			_visibilityReporter.OnBecomeInvisible -= Destroy;
 		}
 
 		private void CheckGround(Vector3 position)
