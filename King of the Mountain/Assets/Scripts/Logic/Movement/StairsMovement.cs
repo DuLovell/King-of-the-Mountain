@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System;
+using Data;
 using DG.Tweening;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Logic.Movement
 		[SerializeField] private int _jumps = 1;
 		[SerializeField] private float _jumpDuration = 1f;
 
-		private Vector3 _newPosition = Config.PlayerStartPosition;
+		private Vector3 _newPosition;
 		
 		public Vector3 StairOffset => Config.StairOffset;
 
@@ -18,6 +19,11 @@ namespace Logic.Movement
 		{
 			_newPosition += deltaPosition;
 			transform.DOJump(_newPosition, _jumpPower, _jumps, _jumpDuration);
+		}
+
+		private void Start()
+		{
+			_newPosition = transform.position;
 		}
 	}
 }
