@@ -30,7 +30,7 @@ namespace Services.Environment.Stairs
 		public void RearrangeStairs(Vector3 centerStairPosition)
 		{
 			int stairsDelta = _stairsCountService.CalculateStairsDelta(centerStairPosition);
-			Debug.Log($"size delta={stairsDelta}");
+			
 			for (int i = 0; i < stairsDelta; i++)
 			{
 				RemoveStair();
