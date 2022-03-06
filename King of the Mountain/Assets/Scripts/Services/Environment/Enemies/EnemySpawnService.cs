@@ -18,9 +18,11 @@ namespace Services.Environment.Enemies
 		private readonly ICoroutineRunner _coroutineRunner;
 
 		private readonly Queue<Enemy> _activeEnemies;
+		private readonly Vector3 _stairOffset = Config.StairOffset;
 		private Coroutine _enemySpawnCoroutine;
 
 		private float NextSpawnDelay => Random.Range(1f, 3f);
+		private float InsideStairsRandomPositionX => Random.Range(-Config.StairLength / 2, Config.StairLength / 2);
 
 		public EnemySpawnService(IStairsCountService stairCountService, IGameFactory gameFactory,
 			ICoroutineRunner coroutineRunner)
@@ -39,7 +41,7 @@ namespace Services.Environment.Enemies
 			{
 				while (true)
 				{
-					Vector3 spawnPosition = (_stairCountService.LastPlayerPositionStairNumber + SPAWN_STAIRS_OFFSET) * Config.StairOffset;
+					Vector3 spawnPosition = GetSpawnPosition();
 					SpawnEnemy(spawnPosition);
 					
 					yield return new WaitForSeconds(NextSpawnDelay);
@@ -53,6 +55,13 @@ namespace Services.Environment.Enemies
 			
 			_coroutineRunner.StopCoroutine(_enemySpawnCoroutine);
 			_enemySpawnCoroutine = null;
+		}
+
+		private Vector3 GetSpawnPosition()
+		{
+			Vector3 spawnPosition = (_stairCountService.LastPlayerPositionStairNumber + SPAWN_STAIRS_OFFSET) * _stairOffset;
+			spawnPosition.x = InsideStairsRandomPositionX;
+			return spawnPosition;
 		}
 
 		private void SpawnEnemy(Vector3 spawnPosition)
