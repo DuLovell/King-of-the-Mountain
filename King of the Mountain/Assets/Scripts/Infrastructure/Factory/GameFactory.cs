@@ -58,6 +58,11 @@ namespace Infrastructure.Factory
 			return followCamera.gameObject;
 		}
 
+		public GameObject CreateEnemy(Vector3 position)
+		{
+			return _assets.Instantiate(AssetPath.EnemyPath, position);
+		}
+
 		public GameObject CreateStair(Vector3 position)
 		{
 			return _assets.Instantiate(AssetPath.StairPath, position);

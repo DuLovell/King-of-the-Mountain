@@ -25,7 +25,7 @@ namespace Logic.Movement
 			OnMoved?.Invoke(_newPosition);
 		}
 
-		private void Start()
+		private void Awake()
 		{
 			_newPosition = transform.position;
 		}

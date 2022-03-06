@@ -45,6 +45,7 @@ namespace Infrastructure.States
 			InitGameWorld();
 			InformProgressReaders();
 
+			//TODO Дождать нажатия прежде чем переходить в GameLoopState
 			_stateMachine.Enter<GameLoopState>();
 		}
 

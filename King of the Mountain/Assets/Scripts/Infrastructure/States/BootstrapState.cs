@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Services.Environment;
+using Services.Environment.Enemies;
 using Services.Environment.Stairs;
 using Services.Input;
 
@@ -15,12 +16,15 @@ namespace Infrastructure.States
 		private readonly GameStateMachine _stateMachine;
 		private readonly SceneLoader _sceneLoader;
 		private readonly AllServices _services;
+		private ICoroutineRunner _coroutineRunner;
 
-		public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services)
+		public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services, 
+			ICoroutineRunner coroutineRunner)
 		{
 			_stateMachine = stateMachine;
 			_sceneLoader = sceneLoader;
 			_services = services;
+			_coroutineRunner = coroutineRunner;
 
 			RegisterServices();
 		}
@@ -49,6 +53,10 @@ namespace Infrastructure.States
 					_services.Single<IGameFactory>()));
 			
 			_services.RegisterSingle<IStairsCountService>(new StairsCountService());
+			
+			_services.RegisterSingle<IEnemySpawnService>(
+				new EnemySpawnService(_services.Single<IStairsCountService>(),
+					_services.Single<IGameFactory>(), _coroutineRunner));
 			
 			_services.RegisterSingle<IStairsPlacementService>(new StairsPlacementService(
 				_services.Single<IGameFactory>(), 

@@ -19,5 +19,6 @@ namespace Infrastructure.Factory
 		GameObject CreateStair(Vector3 position);
 		GameObject CreateSwipeDetector();
 		GameObject CreateFollowCamera(Transform target);
+		GameObject CreateEnemy(Vector3 position);
 	}
 }
