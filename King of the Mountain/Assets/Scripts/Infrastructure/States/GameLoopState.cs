@@ -25,18 +25,25 @@ namespace Infrastructure.States
 
 		public void Enter()
 		{
-			_gameFactory.Player.GetComponent<PlayerMover>().OnPlayerMoved +=
+			_gameFactory.Player.Mover.OnPlayerMoved +=
 				newPlayerPosition =>
 				{
 					_stairsPlacementService.RearrangeStairs(newPlayerPosition);
 				};
+			_gameFactory.Player.OnPlayerDied += EnterGameOverState;
 			
 			_enemySpawnService.StartSpawningEnemies();
+		}
+
+		private void EnterGameOverState()
+		{
+			_stateMachine.Enter<GameOverState>();
 		}
 
 		public void Exit()
 		{
 			_enemySpawnService.StopSpawningEnemies();
+			_gameFactory.Player.OnPlayerDied -= EnterGameOverState;
 		}
 	}
 }

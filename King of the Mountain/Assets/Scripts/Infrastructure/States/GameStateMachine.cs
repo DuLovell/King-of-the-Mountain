@@ -36,6 +36,9 @@ namespace Infrastructure.States
 					services.Single<IStairsPlacementService>(),
 					services.Single<IGameFactory>(),
 					services.Single<IEnemySpawnService>()),
+				
+				[typeof(GameOverState)] = new GameOverState(this,
+					services.Single<IGameFactory>()),
 			};
 		}
 

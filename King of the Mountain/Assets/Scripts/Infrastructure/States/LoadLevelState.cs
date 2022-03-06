@@ -44,8 +44,7 @@ namespace Infrastructure.States
 		{
 			InitGameWorld();
 			InformProgressReaders();
-
-			//TODO Дождать нажатия прежде чем переходить в GameLoopState
+			
 			_stateMachine.Enter<GameLoopState>();
 		}
 
@@ -57,7 +56,7 @@ namespace Infrastructure.States
 
 		private void InitGameWorld()
 		{
-			GameObject player = _gameFactory.CreatePlayer(_playerStartPosition);
+			Player player = _gameFactory.CreatePlayer(_playerStartPosition);
 			GameObject followCamera = _gameFactory.CreateFollowCamera(player.transform);
 			_stairsPlacementService.PlaceStairs(player.transform.position);
 			_gameFactory.CreateHud();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
+using Logic;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -15,7 +16,8 @@ namespace Infrastructure.Factory
 
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 		
-		public GameObject Player { get; private set; }
+		public Player Player { get; private set; }
+		public GameObject FollowCamera { get; private set; }
 
 		public GameFactory(IAssetProvider assets)
 		{
@@ -41,12 +43,12 @@ namespace Infrastructure.Factory
 			ProgressReaders.Add(progressReader);
 		}
 
-		public GameObject CreatePlayer(Vector3 position)
+		public Player CreatePlayer(Vector3 position)
 		{
 			GameObject player = _assets.Instantiate(AssetPath.PlayerPath, position);
-			Player = player;
+			Player = player.GetComponent<Player>();
 			
-			return player;
+			return Player;
 		}
 
 		public GameObject CreateFollowCamera(Transform target)
@@ -54,8 +56,9 @@ namespace Infrastructure.Factory
 			CinemachineVirtualCamera followCamera = _assets.Instantiate<CinemachineVirtualCamera>(AssetPath.FollowCameraPath);
 			followCamera.Follow = target;
 			followCamera.LookAt = target;
+			FollowCamera = followCamera.gameObject;
 			
-			return followCamera.gameObject;
+			return FollowCamera;
 		}
 
 		public GameObject CreateEnemy(Vector3 position)
