@@ -9,5 +9,6 @@ namespace Services.Environment.Stairs
 		event Action<int> OnPlayerStairPositionChanged;
 		int LastPlayerPositionStairNumber { get; }
 		int CalculateStairsDelta(Vector3 newPosition);
+		void ResetCount();
 	}
 }

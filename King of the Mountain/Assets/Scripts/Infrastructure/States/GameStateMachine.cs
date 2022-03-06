@@ -32,13 +32,18 @@ namespace Infrastructure.States
 					services.Single<IPersistentProgressService>(),
 					services.Single<ISaveLoadService>()),
 				
+				[typeof(GameStartState)] = new GameStartState(this,
+						services.Single<IGameFactory>(),
+						services.Single<IStairsCountService>()),
+				
 				[typeof(GameLoopState)] = new GameLoopState(this,  
 					services.Single<IStairsPlacementService>(),
 					services.Single<IGameFactory>(),
 					services.Single<IEnemySpawnService>()),
 				
 				[typeof(GameOverState)] = new GameOverState(this,
-					services.Single<IGameFactory>()),
+					services.Single<IGameFactory>(),
+					sceneLoader),
 			};
 		}
 

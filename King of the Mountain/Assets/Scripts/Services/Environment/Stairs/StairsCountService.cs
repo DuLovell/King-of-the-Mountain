@@ -9,7 +9,7 @@ namespace Services.Environment.Stairs
 		public event Action<int> OnPlayerStairPositionChanged;
 		
 		private readonly Vector3 _stairOffset = Config.StairOffset;
-		private Vector3 _lastPlayerPosition = Config.PlayerStartPosition;
+		private Vector3 _lastPlayerPosition;
 
 		public int LastPlayerPositionStairNumber { get; private set; }
 
@@ -27,6 +27,12 @@ namespace Services.Environment.Stairs
 			}
 
 			return stairsDelta;
+		}
+
+		public void ResetCount()
+		{
+			LastPlayerPositionStairNumber = 0;
+			_lastPlayerPosition = Config.PlayerStartPosition;
 		}
 	}
 }

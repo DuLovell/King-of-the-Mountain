@@ -4,6 +4,7 @@ using Cinemachine;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
+using Logic.View;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -18,15 +19,20 @@ namespace Infrastructure.Factory
 		
 		public Player Player { get; private set; }
 		public GameObject FollowCamera { get; private set; }
+		public HudView Hud { get; private set; }
 
 		public GameFactory(IAssetProvider assets)
 		{
 			_assets = assets;
 		}
 
-		public void CreateHud() =>
-			InstantiateRegistered(AssetPath.HudPath);
-
+		public HudView CreateHud()
+		{
+			GameObject hudGameObject = InstantiateRegistered(AssetPath.HudPath);
+			Hud = hudGameObject.GetComponent<HudView>();
+			return Hud;
+		}
+		
 		public void RegisterProgressWatchers(GameObject gameObject)
 		{
 			foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())

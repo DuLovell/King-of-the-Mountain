@@ -15,10 +15,10 @@ namespace Services.Environment.Stairs
 
 		private readonly IGameFactory _gameFactory;
 		private readonly IStairsCountService _stairsCountService;
-		
-		private readonly Queue<GameObject> _activeStairs = new Queue<GameObject>();
+
 		private readonly Vector3 _stairOffset = Config.StairOffset;
 
+		private Queue<GameObject> _activeStairs;
 		private Transform _stairsContainer;
 
 		public StairsPlacementService(IGameFactory gameFactory, IStairsCountService stairsCountService)
@@ -30,7 +30,7 @@ namespace Services.Environment.Stairs
 		public void RearrangeStairs(Vector3 centerStairPosition)
 		{
 			int stairsDelta = _stairsCountService.CalculateStairsDelta(centerStairPosition);
-
+			Debug.Log($"size delta={stairsDelta}");
 			for (int i = 0; i < stairsDelta; i++)
 			{
 				RemoveStair();
@@ -40,6 +40,7 @@ namespace Services.Environment.Stairs
 
 		public void PlaceStairs(Vector3 centerStairPosition)
 		{
+			_activeStairs = new Queue<GameObject>();
 			_stairsContainer = new GameObject(STAIRS_CONTAINER_NAME).transform;
 			
 			for (int i = -SIDE_MAX_STAIRS_COUNT; i <= SIDE_MAX_STAIRS_COUNT; i++)

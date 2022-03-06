@@ -25,14 +25,28 @@ namespace Infrastructure.States
 
 		public void Enter()
 		{
-			_gameFactory.Player.Mover.OnPlayerMoved +=
-				newPlayerPosition =>
-				{
-					_stairsPlacementService.RearrangeStairs(newPlayerPosition);
-				};
-			_gameFactory.Player.OnPlayerDied += EnterGameOverState;
-			
+			_gameFactory.Hud.ShowGameplayScreen();
+			SubscribeOnPlayerEvents();
 			_enemySpawnService.StartSpawningEnemies();
+		}
+
+		private void SubscribeOnPlayerEvents()
+		{
+			_gameFactory.Player.Mover.OnPlayerMoved += _stairsPlacementService.RearrangeStairs;
+			_gameFactory.Player.OnPlayerDied += EnterGameOverState;
+			_gameFactory.Player.OnPlayerFell += DisableFollowCamera;
+		}
+		
+		private void UnsubscribeOnPlayerEvents()
+		{
+			_gameFactory.Player.Mover.OnPlayerMoved -= _stairsPlacementService.RearrangeStairs;
+			_gameFactory.Player.OnPlayerDied -= EnterGameOverState;
+			_gameFactory.Player.OnPlayerFell -= DisableFollowCamera;
+		}
+
+		private void DisableFollowCamera()
+		{
+			_gameFactory.FollowCamera.SetActive(false);
 		}
 
 		private void EnterGameOverState()
@@ -43,7 +57,7 @@ namespace Infrastructure.States
 		public void Exit()
 		{
 			_enemySpawnService.StopSpawningEnemies();
-			_gameFactory.Player.OnPlayerDied -= EnterGameOverState;
+			UnsubscribeOnPlayerEvents();
 		}
 	}
 }

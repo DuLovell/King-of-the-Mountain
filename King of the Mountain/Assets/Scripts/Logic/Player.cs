@@ -9,6 +9,7 @@ namespace Logic
 	public class Player : MonoBehaviour, IDestroyable
 	{
 		public event Action OnPlayerDied;
+		public event Action OnPlayerFell;
 
 		private Rigidbody _rigidbody;
 		private RendererVisibilityReporter _visibilityReporter;
@@ -38,8 +39,9 @@ namespace Logic
 		{
 			if (Physics.Raycast(position + Vector3.up, -transform.up, Mathf.Infinity)) return;
 			
-			OnPlayerDied?.Invoke();
-				
+			OnPlayerFell?.Invoke();
+
+			Mover.enabled = false;
 			_rigidbody.isKinematic = false;
 		}
 

@@ -45,7 +45,7 @@ namespace Infrastructure.States
 			InitGameWorld();
 			InformProgressReaders();
 			
-			_stateMachine.Enter<GameLoopState>();
+			_stateMachine.Enter<GameStartState>();
 		}
 
 		private void InformProgressReaders()
