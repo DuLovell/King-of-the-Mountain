@@ -18,5 +18,6 @@ namespace Infrastructure.Factory
 		GameObject CreatePlayer(Vector3 position);
 		GameObject CreateStair(Vector3 position, Vector3 lookDirection);
 		GameObject CreateSwipeDetector();
+		GameObject CreateFollowCamera(Transform target);
 	}
 }

@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Cinemachine;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
@@ -42,9 +43,19 @@ namespace Infrastructure.Factory
 
 		public GameObject CreatePlayer(Vector3 position)
 		{
-			GameObject playerInstance = _assets.Instantiate(AssetPath.PlayerPath, position);
-			Player = playerInstance;
-			return playerInstance;
+			GameObject player = _assets.Instantiate(AssetPath.PlayerPath, position);
+			Player = player;
+			
+			return player;
+		}
+
+		public GameObject CreateFollowCamera(Transform target)
+		{
+			CinemachineVirtualCamera followCamera = _assets.Instantiate<CinemachineVirtualCamera>(AssetPath.FollowCameraPath);
+			followCamera.Follow = target;
+			followCamera.LookAt = target;
+			
+			return followCamera.gameObject;
 		}
 
 		public GameObject CreateStair(Vector3 position, Vector3 lookDirection)

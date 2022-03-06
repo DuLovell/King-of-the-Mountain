@@ -57,6 +57,7 @@ namespace Infrastructure.States
 		private void InitGameWorld()
 		{
 			GameObject player = _gameFactory.CreatePlayer(_playerStartPosition);
+			GameObject followCamera = _gameFactory.CreateFollowCamera(player.transform);
 			_stairsPlacementService.PlaceStairs(player.transform);
 			GameObject swipeDetector = _gameFactory.CreateSwipeDetector();
 		}
