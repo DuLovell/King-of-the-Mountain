@@ -11,6 +11,8 @@ namespace Logic.Movement
 	[RequireComponent(typeof(IStairsMovement))]
 	public class PlayerMover : MonoBehaviour
 	{
+		public event Action<Vector3> OnPlayerMoved;
+		
 		private IInputService _inputService;
 		private IStairsMovement _stairsMovement;
 		
@@ -24,12 +26,14 @@ namespace Logic.Movement
 		{
 			_inputService.OnTap += MoveVertically;
 			_inputService.OnSwipe += MoveHorizontally;
+			_stairsMovement.OnMoved += OnMoved;
 		}
 
 		private void OnDisable()
 		{
 			_inputService.OnTap -= MoveVertically;
 			_inputService.OnSwipe -= MoveHorizontally;
+			_stairsMovement.OnMoved -= OnMoved;
 		}
 
 		private void MoveVertically()
@@ -50,6 +54,11 @@ namespace Logic.Movement
 					_stairsMovement.StartMoving(-transform.right);
 					break;
 			}
+		}
+
+		private void OnMoved(Vector3 newPosition)
+		{
+			OnPlayerMoved?.Invoke(newPosition);
 		}
 	}
 }

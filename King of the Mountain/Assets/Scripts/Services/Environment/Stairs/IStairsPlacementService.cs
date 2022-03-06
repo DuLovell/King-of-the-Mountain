@@ -5,7 +5,7 @@ namespace Services.Environment.Stairs
 {
 	public interface IStairsPlacementService : IService
 	{
-		void PlaceStairs(Transform transformPoint);
-		void RearrangeStairs(Transform playerTransform);
+		void PlaceStairs(Vector3 centerStairPosition);
+		void RearrangeStairs(Vector3 centerStairPosition);
 	}
 }

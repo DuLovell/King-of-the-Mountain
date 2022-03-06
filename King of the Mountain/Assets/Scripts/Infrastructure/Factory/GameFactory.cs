@@ -58,9 +58,9 @@ namespace Infrastructure.Factory
 			return followCamera.gameObject;
 		}
 
-		public GameObject CreateStair(Vector3 position, Vector3 lookDirection)
+		public GameObject CreateStair(Vector3 position)
 		{
-			return _assets.Instantiate(AssetPath.StairPath, position, Quaternion.LookRotation(lookDirection));
+			return _assets.Instantiate(AssetPath.StairPath, position);
 		}
 
 		public GameObject CreateSwipeDetector()

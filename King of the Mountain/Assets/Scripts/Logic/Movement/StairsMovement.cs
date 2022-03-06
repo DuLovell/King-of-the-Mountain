@@ -7,6 +7,8 @@ namespace Logic.Movement
 {
 	public class StairsMovement : MonoBehaviour, IStairsMovement
 	{
+		public event Action<Vector3> OnMoved;
+		
 		[SerializeField] private float _jumpPower = 0.5f;
 		[SerializeField] private int _jumps = 1;
 		[SerializeField] private float _jumpDuration = 1f;
@@ -19,6 +21,8 @@ namespace Logic.Movement
 		{
 			_newPosition += deltaPosition;
 			transform.DOJump(_newPosition, _jumpPower, _jumps, _jumpDuration);
+
+			OnMoved?.Invoke(_newPosition);
 		}
 
 		private void Start()

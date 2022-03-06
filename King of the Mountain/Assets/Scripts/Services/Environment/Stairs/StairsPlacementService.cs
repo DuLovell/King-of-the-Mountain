@@ -27,30 +27,30 @@ namespace Services.Environment.Stairs
 			_stairsCountService = stairsCountService;
 		}
 
-		public void RearrangeStairs(Transform transformPoint)
+		public void RearrangeStairs(Vector3 centerStairPosition)
 		{
-			int stairsDelta = _stairsCountService.CalculateStairsDelta(transformPoint.position);
+			int stairsDelta = _stairsCountService.CalculateStairsDelta(centerStairPosition);
 
 			for (int i = 0; i < stairsDelta; i++)
 			{
 				RemoveStair();
-				PlaceStair(_activeStairs.Last().transform.position + _stairOffset, transformPoint.forward);
+				PlaceStair(_activeStairs.Last().transform.position + _stairOffset);
 			}
 		}
 
-		public void PlaceStairs(Transform transformPoint)
+		public void PlaceStairs(Vector3 centerStairPosition)
 		{
 			_stairsContainer = new GameObject(STAIRS_CONTAINER_NAME).transform;
 			
 			for (int i = -SIDE_MAX_STAIRS_COUNT; i <= SIDE_MAX_STAIRS_COUNT; i++)
 			{
-				PlaceStair(transformPoint.position + _stairOffset * i, transformPoint.forward);
+				PlaceStair(centerStairPosition + _stairOffset * i);
 			}
 		}
 
-		private void PlaceStair(Vector3 position, Vector3 lookDirection)
+		private void PlaceStair(Vector3 position)
 		{
-			GameObject stair = _gameFactory.CreateStair(position, lookDirection);
+			GameObject stair = _gameFactory.CreateStair(position);
 			stair.transform.parent = _stairsContainer;
 			
 			_activeStairs.Enqueue(stair);
