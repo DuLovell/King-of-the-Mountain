@@ -2,6 +2,7 @@
 using System.Linq;
 using Data;
 using Infrastructure.Factory;
+using Logic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,21 +11,28 @@ namespace Services.Environment.Stairs
 	//TODO Реализовать object pool
 	public class StairsPlacementService : IStairsPlacementService
 	{
-		private const int SIDE_MAX_STAIRS_COUNT = 10;
 		private const string STAIRS_CONTAINER_NAME = "Stairs";
+		private const int STAIRS_DEFAULT_POOL_CAPACITY = Config.SIDE_MAX_STAIRS_COUNT * 2 + 1;
 
-		private readonly IGameFactory _gameFactory;
 		private readonly IStairsCountService _stairsCountService;
 
 		private readonly Vector3 _stairOffset = Config.StairOffset;
 
-		private Queue<GameObject> _activeStairs;
+		private Queue<Stair> _activeStairs;
 		private Transform _stairsContainer;
+
+		private readonly MonoPool<Stair> _stairsPool;
 
 		public StairsPlacementService(IGameFactory gameFactory, IStairsCountService stairsCountService)
 		{
-			_gameFactory = gameFactory;
 			_stairsCountService = stairsCountService;
+			
+			_stairsPool = new MonoPool<Stair>(
+				createFunction: () => gameFactory.CreateStair(Vector3.zero),
+				actionOnGet: (stair) => stair.gameObject.SetActive(true),
+				actionOnRelease: (stair) => stair.gameObject.SetActive(false),
+				actionOnDestroy: Object.Destroy, STAIRS_DEFAULT_POOL_CAPACITY,
+				autoExpand: true);
 		}
 
 		public void RearrangeStairs(Vector3 centerStairPosition)
@@ -40,10 +48,11 @@ namespace Services.Environment.Stairs
 
 		public void PlaceStairs(Vector3 centerStairPosition)
 		{
-			_activeStairs = new Queue<GameObject>();
+			_stairsPool.CreatePool();
+			_activeStairs = new Queue<Stair>();
 			_stairsContainer = new GameObject(STAIRS_CONTAINER_NAME).transform;
-			
-			for (int i = -SIDE_MAX_STAIRS_COUNT; i <= SIDE_MAX_STAIRS_COUNT; i++)
+
+			for (int i = -Config.SIDE_MAX_STAIRS_COUNT; i <= Config.SIDE_MAX_STAIRS_COUNT; i++)
 			{
 				PlaceStair(centerStairPosition + _stairOffset * i);
 			}
@@ -51,7 +60,8 @@ namespace Services.Environment.Stairs
 
 		private void PlaceStair(Vector3 position)
 		{
-			GameObject stair = _gameFactory.CreateStair(position);
+			Stair stair = _stairsPool.GetElement();
+			stair.transform.position = position;
 			stair.transform.parent = _stairsContainer;
 			
 			_activeStairs.Enqueue(stair);
@@ -59,8 +69,8 @@ namespace Services.Environment.Stairs
 
 		private void RemoveStair()
 		{
-			GameObject removedStair = _activeStairs.Dequeue();
-			Object.Destroy(removedStair);
+			Stair removedStair = _activeStairs.Dequeue();
+			_stairsPool.ReleaseElement(removedStair);
 		}
 	}
 }

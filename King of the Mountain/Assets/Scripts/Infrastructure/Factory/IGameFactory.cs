@@ -20,7 +20,7 @@ namespace Infrastructure.Factory
 		void RegisterProgressWatchers(GameObject gameObject);
 		void Register(ISavedProgressReader progressReader);
 		Player CreatePlayer(Vector3 position);
-		GameObject CreateStair(Vector3 position);
+		Stair CreateStair(Vector3 position);
 		GameObject CreateSwipeDetector();
 		GameObject CreateFollowCamera(Transform target);
 		Enemy CreateEnemy(Vector3 position);

@@ -72,9 +72,9 @@ namespace Infrastructure.Factory
 			return _assets.Instantiate(AssetPath.EnemyPath, position).GetComponent<Enemy>();
 		}
 
-		public GameObject CreateStair(Vector3 position)
+		public Stair CreateStair(Vector3 position)
 		{
-			return _assets.Instantiate(AssetPath.StairPath, position);
+			return _assets.Instantiate(AssetPath.StairPath, position).GetComponent<Stair>();
 		}
 
 		public GameObject CreateSwipeDetector()
