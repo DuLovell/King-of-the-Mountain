@@ -46,11 +46,11 @@ namespace Logic.Movement
 		{
 			switch (swipeData.Direction)
 			{
-				case SwipeDirection.Up:
+				case SwipeDirection.Down:
 				case SwipeDirection.Right:
 					StairsMovement.StartMoving(transform.right);
 					break;
-				case SwipeDirection.Down:
+				case SwipeDirection.Up:
 				case SwipeDirection.Left:
 					StairsMovement.StartMoving(-transform.right);
 					break;
