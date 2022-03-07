@@ -14,7 +14,8 @@ namespace Logic.Movement
 		[SerializeField] private float _jumpDuration = 1f;
 
 		private Vector3 _newPosition;
-		
+		private Sequence _jumpSequence;
+
 		public Vector3 StairOffset => Config.StairOffset;
 
 		public void SetStartPosition(Vector3 position)
@@ -26,9 +27,14 @@ namespace Logic.Movement
 		public void StartMoving(Vector3 deltaPosition)
 		{
 			_newPosition += deltaPosition;
-			transform.DOJump(_newPosition, _jumpPower, _jumps, _jumpDuration);
+			_jumpSequence = transform.DOJump(_newPosition, _jumpPower, _jumps, _jumpDuration);
 
 			OnMoved?.Invoke(_newPosition);
+		}
+
+		private void OnDisable()
+		{
+			_jumpSequence.Kill();
 		}
 	}
 }
