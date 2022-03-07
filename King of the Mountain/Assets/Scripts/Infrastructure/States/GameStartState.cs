@@ -21,6 +21,7 @@ namespace Infrastructure.States
 
 		public void Enter()
 		{
+			_gameFactory.CreateSwipeDetector();
 			_hudStartScreen = _gameFactory.Hud.ShowStartScreen();
 			_hudStartScreen.OnGameStarted += _stateMachine.Enter<GameLoopState>;
 			_stairsCountService.ResetCount();

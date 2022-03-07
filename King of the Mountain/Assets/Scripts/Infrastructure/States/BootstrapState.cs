@@ -1,4 +1,5 @@
-﻿using Infrastructure.AssetManagement;
+﻿using Data;
+using Infrastructure.AssetManagement;
 using Infrastructure.Factory;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
@@ -12,11 +13,11 @@ namespace Infrastructure.States
 {
 	public class BootstrapState : IState
 	{
-		private const string Initial = "Initial";
 		private readonly GameStateMachine _stateMachine;
 		private readonly SceneLoader _sceneLoader;
 		private readonly AllServices _services;
-		private ICoroutineRunner _coroutineRunner;
+		private readonly ICoroutineRunner _coroutineRunner;
+
 
 		public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services, 
 			ICoroutineRunner coroutineRunner)
@@ -31,7 +32,7 @@ namespace Infrastructure.States
 
 		public void Enter()
 		{
-			_sceneLoader.Load(Initial, onLoaded: EnterLoadLevel);
+			_sceneLoader.Load(Config.INITIAL_SCENE_NAME, onLoaded: EnterLoadLevel);
 		}
 
 		public void Exit()
@@ -52,7 +53,7 @@ namespace Infrastructure.States
 				new SaveLoadService(_services.Single<IPersistentProgressService>(), 
 					_services.Single<IGameFactory>()));
 			
-			_services.RegisterSingle<IStairsCountService>(new StairsCountService());
+			_services.RegisterSingle<IStairsCountService>(new StairsCountService(_services.Single<IGameFactory>()));
 			
 			_services.RegisterSingle<IEnemySpawnService>(
 				new EnemySpawnService(_services.Single<IStairsCountService>(),
@@ -64,7 +65,7 @@ namespace Infrastructure.States
 		}
 
 		private void EnterLoadLevel() =>
-			_stateMachine.Enter<LoadProgressState>();
+			_stateMachine.Enter<LoadLevelState, string>(Config.GAMEPLAY_SCENE_NAME);
 
 		private static IInputService GetInputService()
 		{

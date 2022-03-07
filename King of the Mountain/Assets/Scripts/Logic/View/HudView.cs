@@ -7,12 +7,19 @@ namespace Logic.View
 {
 	public class HudView : MonoBehaviour
 	{
+		[SerializeField] private HelloScreen _helloScreen;
 		[SerializeField] private StartScreen _startScreen;
 		[SerializeField] private GameplayScreen _gameplayScreen;
 		[SerializeField] private GameOverScreen _gameOverScreen;
 
 		private MenuScreen _currentScreen;
 
+		public HelloScreen ShowHelloScreen()
+		{
+			SetCurrentScreen(_helloScreen);
+			return _helloScreen;
+		}
+		
 		public StartScreen ShowStartScreen()
 		{
 			SetCurrentScreen(_startScreen);

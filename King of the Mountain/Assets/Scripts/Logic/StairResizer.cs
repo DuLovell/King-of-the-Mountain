@@ -11,7 +11,7 @@ namespace Logic
 		private void Awake()
 		{
 			Vector3 stairScale = _objectToResize.transform.localScale;
-			stairScale.x = Config.StairLength;
+			stairScale.x = Config.STAIR_LENGTH;
 			_objectToResize.transform.localScale = stairScale;
 		}
 	}

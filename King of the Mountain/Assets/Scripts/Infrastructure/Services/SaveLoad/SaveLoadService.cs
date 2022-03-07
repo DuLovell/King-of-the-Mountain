@@ -25,6 +25,12 @@ namespace Infrastructure.Services.SaveLoad
 
 			PlayerPrefs.SetString(ProgressKey, _progressService.Progress.ToJson());
 		}
+		
+		public void InformProgressReaders()
+		{
+			foreach (ISavedProgressReader progressReader in _gameFactory.ProgressReaders)
+				progressReader.LoadProgress(_progressService.Progress);
+		}
 
 		public PlayerProgress LoadProgress()
 		{

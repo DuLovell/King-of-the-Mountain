@@ -33,7 +33,6 @@ namespace Infrastructure.States
 		public void Enter(string sceneName)
 		{
 			_loadingCurtain.Show();
-			_gameFactory.Cleanup();
 			_sceneLoader.Load(sceneName, OnLoaded);
 		}
 
@@ -43,15 +42,8 @@ namespace Infrastructure.States
 		private void OnLoaded()
 		{
 			InitGameWorld();
-			InformProgressReaders();
 			
-			_stateMachine.Enter<GameStartState>();
-		}
-
-		private void InformProgressReaders()
-		{
-			foreach (ISavedProgressReader progressReader in _gameFactory.ProgressReaders)
-				progressReader.LoadProgress(_progressService.Progress);
+			_stateMachine.Enter<LoadProgressState>();
 		}
 
 		private void InitGameWorld()
@@ -60,7 +52,6 @@ namespace Infrastructure.States
 			GameObject followCamera = _gameFactory.CreateFollowCamera(player.transform);
 			_stairsPlacementService.PlaceStairs(player.transform.position);
 			_gameFactory.CreateHud();
-			GameObject swipeDetector = _gameFactory.CreateSwipeDetector();
 		}
 	}
 }

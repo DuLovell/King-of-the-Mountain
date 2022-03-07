@@ -22,7 +22,7 @@ namespace Services.Environment.Enemies
 		private Coroutine _enemySpawnCoroutine;
 
 		private float NextSpawnDelay => Random.Range(1f, 3f);
-		private float InsideStairsRandomPositionX => Random.Range(-Config.StairLength / 2, Config.StairLength / 2);
+		private float InsideStairsRandomPositionX => Random.Range(-Config.STAIR_LENGTH / 2, Config.STAIR_LENGTH / 2);
 
 		public EnemySpawnService(IStairsCountService stairCountService, IGameFactory gameFactory,
 			ICoroutineRunner coroutineRunner)

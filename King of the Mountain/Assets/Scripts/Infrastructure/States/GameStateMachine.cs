@@ -30,7 +30,8 @@ namespace Infrastructure.States
 				
 				[typeof(LoadProgressState)] = new LoadProgressState(this, 
 					services.Single<IPersistentProgressService>(),
-					services.Single<ISaveLoadService>()),
+					services.Single<ISaveLoadService>(),
+					services.Single<IGameFactory>()),
 				
 				[typeof(GameStartState)] = new GameStartState(this,
 						services.Single<IGameFactory>(),
@@ -43,7 +44,8 @@ namespace Infrastructure.States
 				
 				[typeof(GameOverState)] = new GameOverState(this,
 					services.Single<IGameFactory>(),
-					sceneLoader),
+					sceneLoader,
+					services.Single<ISaveLoadService>()),
 			};
 		}
 
