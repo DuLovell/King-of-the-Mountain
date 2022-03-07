@@ -23,18 +23,13 @@ namespace Logic.View
 
 		private void OnEnable()
 		{
+			UpdateResultText();
+		}
+
+		private void UpdateResultText()
+		{
 			_curentResultTextMesh.text = _stairsCountService.LastPlayerPositionStairNumber.ToString();
 			_bestResultTextMesh.text = _stairsCountService.BestPlayerPositionStairNumber.ToString();
-		}
-
-		public void LoadProgress(PlayerProgress progress)
-		{
-			_bestResultTextMesh.text = progress.BestScore.ToString();
-		}
-
-		public void UpdateProgress(PlayerProgress progress)
-		{
-			progress.BestScore = _stairsCountService.LastPlayerPositionStairNumber;
 		}
 	}
 }
