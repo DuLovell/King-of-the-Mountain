@@ -49,7 +49,7 @@ namespace Infrastructure.States
 		private void InitGameWorld()
 		{
 			Player player = _gameFactory.CreatePlayer(_playerStartPosition);
-			GameObject followCamera = _gameFactory.CreateFollowCamera(player.transform);
+			_gameFactory.CreateFollowCamera(player.transform);
 			_stairsPlacementService.PlaceStairs(player.transform.position);
 			_gameFactory.CreateHud();
 		}

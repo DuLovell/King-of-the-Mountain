@@ -12,7 +12,7 @@ public class MonoPool<T> where T : MonoBehaviour
 	private readonly Action<T> _actionOnDestroy;
 	private readonly int _defaultCapacity;
 	private readonly bool _autoExpand;
-	private readonly Transform _container;
+	private Transform _container;
 
 	private List<T> _pool;
 
@@ -63,8 +63,9 @@ public class MonoPool<T> where T : MonoBehaviour
 		}
 	}
 
-	public void CreatePool()
+	public void CreatePool(Transform container)
 	{
+		_container = container;
 		_pool = new List<T>();
 		for (int i = 0; i < _defaultCapacity; i++)
 		{
@@ -76,6 +77,7 @@ public class MonoPool<T> where T : MonoBehaviour
 	{
 		T createdObject = _createFunction.Invoke();
 		createdObject.gameObject.SetActive(isActiveByDefault);
+		createdObject.transform.parent = _container;
 		_pool.Add(createdObject);
 		return createdObject;
 	}

@@ -17,17 +17,18 @@ namespace Logic.Movement
 		
 		public Vector3 StairOffset => Config.StairOffset;
 
+		public void SetStartPosition(Vector3 position)
+		{
+			_newPosition = position;
+			transform.position = _newPosition;
+		}
+
 		public void StartMoving(Vector3 deltaPosition)
 		{
 			_newPosition += deltaPosition;
 			transform.DOJump(_newPosition, _jumpPower, _jumps, _jumpDuration);
 
 			OnMoved?.Invoke(_newPosition);
-		}
-
-		private void Awake()
-		{
-			_newPosition = transform.position;
 		}
 	}
 }

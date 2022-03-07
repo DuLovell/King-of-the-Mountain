@@ -31,7 +31,8 @@ namespace Services.Environment.Stairs
 				createFunction: () => gameFactory.CreateStair(Vector3.zero),
 				actionOnGet: (stair) => stair.gameObject.SetActive(true),
 				actionOnRelease: (stair) => stair.gameObject.SetActive(false),
-				actionOnDestroy: Object.Destroy, STAIRS_DEFAULT_POOL_CAPACITY,
+				actionOnDestroy: Object.Destroy, 
+				defaultCapacity: STAIRS_DEFAULT_POOL_CAPACITY,
 				autoExpand: true);
 		}
 
@@ -48,9 +49,9 @@ namespace Services.Environment.Stairs
 
 		public void PlaceStairs(Vector3 centerStairPosition)
 		{
-			_stairsPool.CreatePool();
-			_activeStairs = new Queue<Stair>();
 			_stairsContainer = new GameObject(STAIRS_CONTAINER_NAME).transform;
+			_stairsPool.CreatePool(_stairsContainer);
+			_activeStairs = new Queue<Stair>();
 
 			for (int i = -Config.SIDE_MAX_STAIRS_COUNT; i <= Config.SIDE_MAX_STAIRS_COUNT; i++)
 			{
@@ -62,7 +63,6 @@ namespace Services.Environment.Stairs
 		{
 			Stair stair = _stairsPool.GetElement();
 			stair.transform.position = position;
-			stair.transform.parent = _stairsContainer;
 			
 			_activeStairs.Enqueue(stair);
 		}

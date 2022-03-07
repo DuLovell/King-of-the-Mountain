@@ -8,5 +8,6 @@ namespace Logic.Movement
 		Vector3 StairOffset { get; }
 		void StartMoving(Vector3 deltaPosition);
 		event Action<Vector3> OnMoved;
+		void SetStartPosition(Vector3 position);
 	}
 }

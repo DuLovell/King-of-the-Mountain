@@ -14,31 +14,32 @@ namespace Logic.Movement
 		public event Action<Vector3> OnPlayerMoved;
 		
 		private IInputService _inputService;
-		private IStairsMovement _stairsMovement;
 		
+		public IStairsMovement StairsMovement { get; private set; }
+
 		private void Awake()
 		{
 			_inputService = AllServices.Container.Single<IInputService>();
-			_stairsMovement = GetComponent<IStairsMovement>();
+			StairsMovement = GetComponent<IStairsMovement>();
 		}
 
 		private void OnEnable()
 		{
 			_inputService.OnTap += MoveVertically;
 			_inputService.OnSwipe += MoveHorizontally;
-			_stairsMovement.OnMoved += OnMoved;
+			StairsMovement.OnMoved += OnMoved;
 		}
 
 		private void OnDisable()
 		{
 			_inputService.OnTap -= MoveVertically;
 			_inputService.OnSwipe -= MoveHorizontally;
-			_stairsMovement.OnMoved -= OnMoved;
+			StairsMovement.OnMoved -= OnMoved;
 		}
 
 		private void MoveVertically()
 		{
-			_stairsMovement.StartMoving(_stairsMovement.StairOffset);
+			StairsMovement.StartMoving(StairsMovement.StairOffset);
 		}
 
 		private void MoveHorizontally(SwipeData swipeData)
@@ -47,11 +48,11 @@ namespace Logic.Movement
 			{
 				case SwipeDirection.Up:
 				case SwipeDirection.Right:
-					_stairsMovement.StartMoving(transform.right);
+					StairsMovement.StartMoving(transform.right);
 					break;
 				case SwipeDirection.Down:
 				case SwipeDirection.Left:
-					_stairsMovement.StartMoving(-transform.right);
+					StairsMovement.StartMoving(-transform.right);
 					break;
 			}
 		}

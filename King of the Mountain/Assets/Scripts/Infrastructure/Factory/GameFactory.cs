@@ -53,6 +53,7 @@ namespace Infrastructure.Factory
 		{
 			GameObject player = _assets.Instantiate(AssetPath.PlayerPath, position);
 			Player = player.GetComponent<Player>();
+			Player.Mover.StairsMovement.SetStartPosition(position);
 			
 			return Player;
 		}
