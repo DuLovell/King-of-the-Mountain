@@ -19,8 +19,8 @@ namespace Logic.Movement
 
 		public void SetStartPosition(Vector3 position)
 		{
+			transform.position = position;
 			_newPosition = position;
-			transform.position = _newPosition;
 		}
 
 		public void StartMoving(Vector3 deltaPosition)

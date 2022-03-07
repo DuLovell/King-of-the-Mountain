@@ -17,7 +17,6 @@ namespace Services.Environment.Enemies
 		private readonly IStairsCountService _stairCountService;
 		private readonly ICoroutineRunner _coroutineRunner;
 
-		private readonly Queue<Enemy> _activeEnemies;
 		private readonly Vector3 _stairOffset = Config.StairOffset;
 		private readonly MonoPool<Enemy> _enemiesPool;
 
@@ -32,13 +31,12 @@ namespace Services.Environment.Enemies
 			ICoroutineRunner coroutineRunner)
 		{
 			_stairCountService = stairCountService;
-			_activeEnemies = new Queue<Enemy>();
 			_coroutineRunner = coroutineRunner;
 
 			_enemiesPool = new MonoPool<Enemy>(
 				createFunction: () => gameFactory.CreateEnemy(Vector3.zero),
-				actionOnGet: (stair) => stair.gameObject.SetActive(true),
-				actionOnRelease: (stair) => stair.gameObject.SetActive(false),
+				actionOnGet: (enemy) => enemy.gameObject.SetActive(true),
+				actionOnRelease: (enemy) => enemy.gameObject.SetActive(false),
 				actionOnDestroy: Object.Destroy, 
 				defaultCapacity: 10,
 				autoExpand: true);
@@ -81,17 +79,15 @@ namespace Services.Environment.Enemies
 		private void SpawnEnemy(Vector3 spawnPosition)
 		{
 			Enemy enemy = _enemiesPool.GetElement();
-			enemy.Mover.SetStartPosition(spawnPosition);
-			
-			enemy.VisibilityReporter.OnBecomeInvisible += HideEnemy;
-			_activeEnemies.Enqueue(enemy);
+			enemy.StartMoving(spawnPosition);
+			enemy.OnBecameInvisible += HideEnemy;
 		}
 
-		private void HideEnemy()
+		private void HideEnemy(Enemy enemy)
 		{
-			Enemy enemyToHide = _activeEnemies.Dequeue();
-			enemyToHide.VisibilityReporter.OnBecomeInvisible -= HideEnemy;
-			_enemiesPool.ReleaseElement(enemyToHide);
+			enemy.OnBecameInvisible -= HideEnemy;
+			enemy.StopMoving();
+			_enemiesPool.ReleaseElement(enemy);
 		}
 	}
 }

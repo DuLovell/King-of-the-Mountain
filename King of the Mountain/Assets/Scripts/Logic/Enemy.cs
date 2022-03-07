@@ -5,16 +5,44 @@ using UnityEngine;
 namespace Logic
 {
 	[RequireComponent(typeof(RendererVisibilityReporter))]
-	[RequireComponent(typeof(IStairsMovement))]
+	[RequireComponent(typeof(EnemyMovement))]
 	public class Enemy : MonoBehaviour
 	{
-		public RendererVisibilityReporter VisibilityReporter { get; private set; }
-		public IStairsMovement Mover { get; private set; }
+		public event Action<Enemy> OnBecameInvisible;
+		
+		private RendererVisibilityReporter _visibilityReporter;
+		private EnemyMovement _mover;
 
+		public void StartMoving(Vector3 startPosition)
+		{
+			_mover.StairsMovement.SetStartPosition(startPosition);
+			_mover.StartMoving();
+		}
+
+		public void StopMoving()
+		{
+			_mover.StopMoving();
+		}
+		
 		private void Awake()
 		{
-			VisibilityReporter = GetComponent<RendererVisibilityReporter>();
-			Mover = GetComponent<IStairsMovement>();
+			_visibilityReporter = GetComponent<RendererVisibilityReporter>();
+			_mover = GetComponent<EnemyMovement>();
+		}
+
+		private void OnEnable()
+		{
+			_visibilityReporter.OnBecomeInvisible += InvokeOnBecameInvisible;
+		}
+
+		private void OnDisable()
+		{
+			_visibilityReporter.OnBecomeInvisible -= InvokeOnBecameInvisible;
+		}
+
+		private void InvokeOnBecameInvisible(GameObject obj)
+		{
+			OnBecameInvisible?.Invoke(this);
 		}
 	}
 }

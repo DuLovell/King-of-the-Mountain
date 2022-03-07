@@ -7,30 +7,42 @@ namespace Logic.Movement
 	[RequireComponent(typeof(IStairsMovement))]
 	public class EnemyMovement : MonoBehaviour
 	{
-		private IStairsMovement _stairsMovement;
+		private readonly WaitForSeconds _nextMoveDelay = new WaitForSeconds(1f);
+		
+		private Coroutine _moveCoroutine;
+		
+		public IStairsMovement StairsMovement { get; private set; }
 
 		private void Awake()
 		{
-			_stairsMovement = GetComponent<IStairsMovement>();
+			StairsMovement = GetComponent<IStairsMovement>();
 		}
 
-		private void Start()
+		private void OnDisable()
 		{
-			Coroutine _moveCoroutine = StartMoving();
+			StopMoving();
 		}
 
-		private Coroutine StartMoving()
+		public void StartMoving()
 		{
-			return StartCoroutine(MoveRoutine());
+			_moveCoroutine = StartCoroutine(MoveRoutine());
 
 			IEnumerator MoveRoutine()
 			{
 				while (true)
 				{
-					_stairsMovement.StartMoving(-_stairsMovement.StairOffset);
-					yield return new WaitForSeconds(1f);
+					StairsMovement.StartMoving(-StairsMovement.StairOffset);
+					yield return _nextMoveDelay;
 				}
 			}
+		}
+
+		public void StopMoving()
+		{
+			if (_moveCoroutine == null) return;
+			
+			StopCoroutine(_moveCoroutine);
+			_moveCoroutine = null;
 		}
 	}
 }
