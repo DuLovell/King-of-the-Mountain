@@ -40,7 +40,7 @@ namespace Logic
 			_visibilityReporter.OnBecomeInvisible -= InvokeOnBecameInvisible;
 		}
 
-		private void InvokeOnBecameInvisible(GameObject obj)
+		private void InvokeOnBecameInvisible()
 		{
 			OnBecameInvisible?.Invoke(this);
 		}

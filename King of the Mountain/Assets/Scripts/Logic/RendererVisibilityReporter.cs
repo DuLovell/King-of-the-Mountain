@@ -5,8 +5,8 @@ namespace Logic
 {
 	public class RendererVisibilityReporter : MonoBehaviour
 	{
-		public event Action<GameObject> OnBecomeInvisible;
-		public event Action<GameObject> OnBecomeVisible;
+		public event Action OnBecomeInvisible;
+		public event Action OnBecomeVisible;
 
 		[SerializeField] private Renderer _renderer;
 		
@@ -23,12 +23,12 @@ namespace Logic
 		{
 			if (_renderer.isVisible && !_wasVisible)
 			{
-				OnBecomeVisible?.Invoke(gameObject);
+				OnBecomeVisible?.Invoke();
 			}
 
 			if (!_renderer.isVisible && _wasVisible)
 			{
-				OnBecomeInvisible?.Invoke(gameObject);
+				OnBecomeInvisible?.Invoke();
 			}
 		}
 	}
