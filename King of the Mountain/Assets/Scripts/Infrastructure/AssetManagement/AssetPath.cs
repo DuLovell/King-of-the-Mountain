@@ -8,5 +8,6 @@ namespace Infrastructure.AssetManagement
 		public const string HudPath = "Prefabs/Hud/Hud";
 		public const string FollowCameraPath = "Prefabs/Camera/Follow VCam";
 		public const string EnemyPath = "Prefabs/Enemy/Enemy";
+		public const string ScoreItemPath = "Prefabs/Hud/Score Item";
 	}
 }

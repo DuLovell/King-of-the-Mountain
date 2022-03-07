@@ -8,6 +8,7 @@ using Logic;
 using Services.Environment;
 using Services.Environment.Enemies;
 using Services.Environment.Stairs;
+using Services.Leaderboard;
 
 namespace Infrastructure.States
 {
@@ -45,7 +46,8 @@ namespace Infrastructure.States
 				[typeof(GameOverState)] = new GameOverState(this,
 					services.Single<IGameFactory>(),
 					sceneLoader,
-					services.Single<ISaveLoadService>()),
+					services.Single<ISaveLoadService>(),
+					services.Single<ILeaderboardService>()),
 			};
 		}
 

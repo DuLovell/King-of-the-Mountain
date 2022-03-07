@@ -5,6 +5,7 @@ using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
 using Logic.View;
+using Logic.View.Leaderboard;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -71,6 +72,14 @@ namespace Infrastructure.Factory
 		public Enemy CreateEnemy(Vector3 position)
 		{
 			return _assets.Instantiate(AssetPath.EnemyPath, position).GetComponent<Enemy>();
+		}
+
+		public ScoreItemView CreateScoreItem(int rank, int playerScore, Transform container)
+		{
+			GameObject scoreItem = _assets.Instantiate(AssetPath.ScoreItemPath, container);
+			ScoreItemView scoreItemView = scoreItem.GetComponent<ScoreItemView>();
+			scoreItemView.UpdateView(rank, playerScore);
+			return scoreItemView;
 		}
 
 		public Stair CreateStair(Vector3 position)

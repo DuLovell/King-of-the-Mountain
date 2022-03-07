@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Logic.View.Leaderboard;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ namespace Logic.View.Screens
 		[Header("Other UI")] 
 		[SerializeField] private ResultView _resultView;
 		[SerializeField] private Button _playerAgainButton;
+		[SerializeField] private LeaderboardView _leaderboardView;
 		
 		public override void Show()
 		{
@@ -39,6 +41,7 @@ namespace Logic.View.Screens
 		{
 			_resultView.gameObject.SetActive(true);
 			_playerAgainButton.gameObject.SetActive(true);
+			_leaderboardView.gameObject.SetActive(true);
 		}
 
 		private void InvokeOnGameOverPressed()

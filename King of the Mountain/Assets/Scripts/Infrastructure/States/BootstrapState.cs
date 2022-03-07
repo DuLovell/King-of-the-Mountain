@@ -8,6 +8,8 @@ using Services.Environment;
 using Services.Environment.Enemies;
 using Services.Environment.Stairs;
 using Services.Input;
+using Services.Leaderboard;
+using UnityEngine.SocialPlatforms;
 
 namespace Infrastructure.States
 {
@@ -41,13 +43,16 @@ namespace Infrastructure.States
 
 		private void RegisterServices()
 		{
-			_services.RegisterSingle<IInputService>(GetInputService());
+			_services.RegisterSingle<IInputService>(new MobileInputService());
 			
 			_services.RegisterSingle<IAssetProvider>(new AssetProvider());
 			
 			_services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 			
 			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssetProvider>()));
+		
+			_services.RegisterSingle<ILeaderboardService>(
+				new OnlineLeaderboardService(_services.Single<IPersistentProgressService>()));
 			
 			_services.RegisterSingle<ISaveLoadService>(
 				new SaveLoadService(_services.Single<IPersistentProgressService>(), 
@@ -66,10 +71,5 @@ namespace Infrastructure.States
 
 		private void EnterLoadLevel() =>
 			_stateMachine.Enter<LoadLevelState, string>(Config.GAMEPLAY_SCENE_NAME);
-
-		private static IInputService GetInputService()
-		{
-			return new MobileInputService();
-		}
 	}
 }

@@ -3,6 +3,7 @@ using Data;
 using Infrastructure.Factory;
 using Infrastructure.Services.SaveLoad;
 using Logic.View.Screens;
+using Services.Leaderboard;
 
 namespace Infrastructure.States
 {
@@ -14,21 +15,27 @@ namespace Infrastructure.States
 
 		private GameOverScreen _gameOverScreen;
 		private readonly ISaveLoadService _saveloadProgress;
+		private readonly ILeaderboardService _leaderboardService;
 
-		public GameOverState(GameStateMachine stateMachine, IGameFactory gameFactory, SceneLoader sceneLoader, ISaveLoadService saveloadProgress)
+		public GameOverState(GameStateMachine stateMachine, IGameFactory gameFactory, SceneLoader sceneLoader, 
+			ISaveLoadService saveloadProgress, ILeaderboardService leaderboardService)
 		{
 			_stateMachine = stateMachine;
 			_gameFactory = gameFactory;
 			_sceneLoader = sceneLoader;
 			_saveloadProgress = saveloadProgress;
+			_leaderboardService = leaderboardService;
 		}
 
 		public void Enter()
 		{
 			_saveloadProgress.SaveProgress();
 			_saveloadProgress.InformProgressReaders();
+			
 			_gameOverScreen = _gameFactory.Hud.ShowGameOverScreen();
 			_gameOverScreen.OnGameOverPressed += RestartGame;
+			
+			_leaderboardService.SubmitScore(_saveloadProgress.LoadProgress().BestScore);
 		}
 
 		private void RestartGame()

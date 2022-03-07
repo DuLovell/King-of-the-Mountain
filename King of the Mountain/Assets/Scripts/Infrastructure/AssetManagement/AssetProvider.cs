@@ -6,14 +6,20 @@ namespace Infrastructure.AssetManagement
 	{
 		public GameObject Instantiate(string path, Vector3 position)
 		{
-			var prefab = Resources.Load<GameObject>(path);
+			GameObject prefab = Resources.Load<GameObject>(path);
 			return Object.Instantiate(prefab, position, Quaternion.identity);
 		}
 		
 		public GameObject Instantiate(string path, Vector3 position, Quaternion rotation)
 		{
-			var prefab = Resources.Load<GameObject>(path);
+			GameObject prefab = Resources.Load<GameObject>(path);
 			return Object.Instantiate(prefab, position, rotation);
+		}
+
+		public GameObject Instantiate(string path, Transform container)
+		{
+			GameObject prefab = Resources.Load<GameObject>(path);
+			return Object.Instantiate(prefab, container);
 		}
 
 		public T Instantiate<T>(string path) where T : Object

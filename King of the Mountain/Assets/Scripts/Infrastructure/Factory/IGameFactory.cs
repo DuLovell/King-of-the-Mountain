@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
 using Logic.View;
+using Logic.View.Leaderboard;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -24,5 +25,6 @@ namespace Infrastructure.Factory
 		GameObject CreateSwipeDetector();
 		GameObject CreateFollowCamera(Transform target);
 		Enemy CreateEnemy(Vector3 position);
+		ScoreItemView CreateScoreItem(int rank, int playerScore, Transform container);
 	}
 }
