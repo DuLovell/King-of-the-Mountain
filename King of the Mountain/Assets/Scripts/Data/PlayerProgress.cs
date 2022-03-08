@@ -13,6 +13,7 @@ namespace Data
 		public PlayerProgress(string playerName)
 		{
 			Name = playerName;
+			BestScore = 0;
 		}
 	}
 }

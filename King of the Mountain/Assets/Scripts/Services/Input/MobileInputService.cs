@@ -1,4 +1,5 @@
 using System;
+using Logic.Input;
 using UnityEngine;
 
 namespace Services.Input

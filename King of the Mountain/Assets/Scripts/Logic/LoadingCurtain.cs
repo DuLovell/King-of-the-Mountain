@@ -1,12 +1,16 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Logic
 {
 	[RequireComponent(typeof(CanvasGroup))]
-	//TODO Заменить на реализацию через DOTween
 	public class LoadingCurtain : MonoBehaviour
 	{
+		private const float CURTAIN_WHEN_SHOWN_ALPHA = 1f;
+		private const float CURTAIN_WHEN_HIDDEN_ALPHA = 0f;
+		private const float FADE_IN_DURATION = 1f;
+
 		private CanvasGroup _curtain;
 
 		private void Awake()
@@ -18,20 +22,12 @@ namespace Logic
 		public void Show()
 		{
 			gameObject.SetActive(true);
-			_curtain.alpha = 1;
+			_curtain.alpha = CURTAIN_WHEN_SHOWN_ALPHA;
 		}
 
-		public void Hide() => StartCoroutine(DoFadeIn());
-
-		private IEnumerator DoFadeIn()
+		public void Hide()
 		{
-			while (_curtain.alpha > 0)
-			{
-				_curtain.alpha -= 0.03f;
-				yield return new WaitForSeconds(0.03f);
-			}
-
-			gameObject.SetActive(false);
+			_curtain.DOFade(CURTAIN_WHEN_HIDDEN_ALPHA, FADE_IN_DURATION).OnComplete(() => gameObject.SetActive(false));
 		}
 	}
 }

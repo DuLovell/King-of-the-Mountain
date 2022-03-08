@@ -4,6 +4,7 @@ using Cinemachine;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
+using Logic.Input;
 using Logic.View;
 using Logic.View.Leaderboard;
 using UnityEngine;

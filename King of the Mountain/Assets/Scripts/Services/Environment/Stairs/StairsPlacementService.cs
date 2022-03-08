@@ -8,7 +8,6 @@ using Object = UnityEngine.Object;
 
 namespace Services.Environment.Stairs
 {
-	//TODO Реализовать object pool
 	public class StairsPlacementService : IStairsPlacementService
 	{
 		private const string STAIRS_CONTAINER_NAME = "Stairs";
