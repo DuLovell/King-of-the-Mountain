@@ -9,5 +9,6 @@ namespace Infrastructure.AssetManagement
 		T Instantiate<T>(string path) where T : Object;
 		GameObject Instantiate(string path, Vector3 position);
 		GameObject Instantiate(string path, Vector3 position, Quaternion rotation);
+		GameObject Instantiate(string path, Transform container);
 	}
 }

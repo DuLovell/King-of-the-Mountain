@@ -5,24 +5,49 @@ using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Logic;
+using Services.Environment;
+using Services.Environment.Enemies;
+using Services.Environment.Stairs;
+using Services.Leaderboard;
 
 namespace Infrastructure.States
 {
 	public class GameStateMachine
 	{
-		private Dictionary<Type, IExitableState> _states;
+		private readonly Dictionary<Type, IExitableState> _states;
 		private IExitableState _activeState;
 
-		public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices services)
+		public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices services,
+			ICoroutineRunner coroutineRunner)
 		{
 			_states = new Dictionary<Type, IExitableState>
 			{
-				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
+				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services, coroutineRunner),
+				
 				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain,
-					services.Single<IGameFactory>(), services.Single<IPersistentProgressService>()),
-				[typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(),
-					services.Single<ISaveLoadService>()),
-				[typeof(GameLoopState)] = new GameLoopState(this),
+					services.Single<IGameFactory>(), 
+					services.Single<IPersistentProgressService>(), 
+					services.Single<IStairsPlacementService>()),
+				
+				[typeof(LoadProgressState)] = new LoadProgressState(this, 
+					services.Single<IPersistentProgressService>(),
+					services.Single<ISaveLoadService>(),
+					services.Single<IGameFactory>()),
+				
+				[typeof(GameStartState)] = new GameStartState(this,
+						services.Single<IGameFactory>(),
+						services.Single<IStairsCountService>()),
+				
+				[typeof(GameLoopState)] = new GameLoopState(this,  
+					services.Single<IStairsPlacementService>(),
+					services.Single<IGameFactory>(),
+					services.Single<IEnemySpawnService>()),
+				
+				[typeof(GameOverState)] = new GameOverState(this,
+					services.Single<IGameFactory>(),
+					sceneLoader,
+					services.Single<ISaveLoadService>(),
+					services.Single<ILeaderboardService>()),
 			};
 		}
 

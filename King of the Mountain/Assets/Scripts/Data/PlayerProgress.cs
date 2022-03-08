@@ -7,9 +7,13 @@ namespace Data
 	[Serializable]
 	public class PlayerProgress
 	{
-		public PlayerProgress()
+		public string Name;
+		public int BestScore;
+		
+		public PlayerProgress(string playerName)
 		{
-			
+			Name = playerName;
+			BestScore = 0;
 		}
 	}
 }

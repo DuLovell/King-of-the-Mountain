@@ -1,44 +1,75 @@
 using Data;
+using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
+using Logic.View;
+using Logic.View.Screens;
 
 namespace Infrastructure.States
 {
 	public class LoadProgressState : IState
 	{
-		private const string GAMEPLAY_SCENE_NAME = "Gameplay";
-
 		private readonly GameStateMachine _gameStateMachine;
 		private readonly IPersistentProgressService _progressService;
 		private readonly ISaveLoadService _saveLoadProgress;
+		private readonly IGameFactory _gameFactory;
+		
+		private HelloScreen _helloScreen;
 
 		public LoadProgressState(GameStateMachine gameStateMachine, IPersistentProgressService progressService,
-			ISaveLoadService saveLoadProgress)
+			ISaveLoadService saveLoadProgress, IGameFactory gameFactory)
 		{
 			_gameStateMachine = gameStateMachine;
 			_progressService = progressService;
 			_saveLoadProgress = saveLoadProgress;
+			_gameFactory = gameFactory;
 		}
 
 		public void Enter()
 		{
-			LoadProgressOrInitNew();
+			if (!TryLoadProgress())
+			{
+				_helloScreen = _gameFactory.Hud.ShowHelloScreen();
+				_helloScreen.OnNameEntered += LoadLevelWithNewProgress;
+			}
+			else
+			{
+				EnterGameStartState();
+			}
+		}
 
-			_gameStateMachine.Enter<LoadLevelState, string>(GAMEPLAY_SCENE_NAME);
+		private void LoadLevelWithNewProgress(string playerName)
+		{
+			CreateNewProgress(playerName);
+			EnterGameStartState();
+		}
+
+		private void EnterGameStartState()
+		{
+			_gameStateMachine.Enter<GameStartState>();
+		}
+
+		private bool TryLoadProgress()
+		{
+			_progressService.Progress = _saveLoadProgress.LoadProgress();
+
+			return _progressService.Progress != null;
+		}
+
+		private void CreateNewProgress(string playerName)
+		{
+			_progressService.Progress = new PlayerProgress(playerName);
 		}
 
 		public void Exit()
 		{
+			if (_helloScreen != null)
+			{
+				_helloScreen.OnNameEntered -= CreateNewProgress;
+			}
+			
+			_saveLoadProgress.SaveProgress();
+			_saveLoadProgress.InformProgressReaders();
 		}
-
-		private void LoadProgressOrInitNew()
-		{
-			_progressService.Progress =
-				_saveLoadProgress.LoadProgress()
-				?? NewProgress();
-		}
-
-		private PlayerProgress NewProgress() =>
-			new PlayerProgress();
 	}
 }
